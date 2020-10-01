@@ -1,7 +1,7 @@
 .code16
 
 .equ BOOTSEG, 0x07c0
-.equ SETUPSEG, 0xf000
+.equ SETUPSEG, 0x9000
 
 .global _start
 
@@ -32,7 +32,7 @@ _load_setup:
 	
 	mov $SETUPSEG, %ax
 	mov %ax, %es
-	mov $0x0000, %bx
+	mov $0x0200, %bx
 
 	mov $0x02, %ah
 	mov $0x04, %al
@@ -44,7 +44,7 @@ _load_setup:
 on_load_setup_success:
 	mov $SETUPSEG, %ax
 	mov %ax, %ds
-	ljmp $SETUPSEG, $0
+	ljmp $SETUPSEG, $0x0200
 
 _loading_string:
 	msg : .ascii "Loading System..."
