@@ -1,6 +1,7 @@
 .code16
 
 .equ BOOTSEG, 0x07c0
+.equ INITSEG, 0x9000
 .equ SETUPSEG, 0x9000
 
 .global _start
@@ -25,6 +26,28 @@ _start:
 	mov $0x07, %bl
 	
 	int $0x10
+
+move_me:
+	mov $BOOTSEG, %ax
+	mov %ax, %ds
+	
+	mov $INITSEG, %ax
+	mov %ax, %es
+
+	mov $0x200, %cx
+
+	sub %si, %si
+	sub %di, %di
+
+	rep movsb
+
+	ljmp $INITSEG, $move_finish
+
+move_finish:
+	mov %cs, %ax
+	mov %ax, %ds
+	mov %ax, %es
+	mov %ax, %ss
 
 _load_setup:
 	mov $0x0002, %cx
