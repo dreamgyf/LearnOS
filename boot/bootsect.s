@@ -2,7 +2,8 @@
 
 .equ BOOTSEG, 0x07c0
 .equ INITSEG, 0x9000
-.equ SETUPSEG, 0x9000
+.equ SETUP_OFFSET, 0x0200
+.equ SYSSEG, 0x1000
 
 .global _start
 
@@ -49,27 +50,42 @@ move_finish:
 	mov %ax, %es
 	mov %ax, %ss
 
-_load_setup:
+load_setup:
+	mov $INITSEG, %ax
+	mov %ax, %es
+	mov $SETUP_OFFSET, %bx
+
 	mov $0x0002, %cx
 	mov $0x0000, %dx
-	
-	mov $SETUPSEG, %ax
-	mov %ax, %es
-	mov $0x0200, %bx
 
 	mov $0x02, %ah
 	mov $0x04, %al
 	int $0x13
 
-	jnc on_load_setup_success
-	jmp _load_setup
+	jnc load_system
+	jmp load_setup
 
-on_load_setup_success:
-	mov $SETUPSEG, %ax
+load_system:
+	mov $SYSSEG, %ax
+	mov %ax, %es
+	mov $0x0000, %bx
+
+	mov $0x0006, %cx
+	mov $0x0000, %dx
+
+	mov $0x02, %ah
+	mov $0x04, %al
+	int $0x13
+
+	jnc on_load_success
+	jmp load_system
+
+on_load_success:
+	mov $INITSEG, %ax
 	mov %ax, %ds
-	ljmp $SETUPSEG, $0x0200
+	ljmp $INITSEG, $SETUP_OFFSET
 
-_loading_string:
+loading_string:
 	msg : .ascii "Loading System..."
 	.byte 13, 10
 	len = . - msg

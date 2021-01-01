@@ -4,6 +4,36 @@
 
 .section .text
 
+jmp _start
+
+gdt_48:
+	.word (gdt_end - gdt) - 1
+	.long 0x90200 + gdt
+
+gdt:
+	gdt_black: 
+	.word 0, 0, 0, 0
+	gdt_code:
+	.word 0x7ff
+	.word 0x0000
+	.word 0x9a00
+	.word 0x00c0
+	gdt_data:
+	.word 0x7ff
+	.word 0x0000
+	.word 0x9200
+	.word 0x00c0
+gdt_end:
+
+idt_48:
+	.word 0
+	.word 0, 0
+
+strings:
+	msg : .ascii "Load setup successful"
+	.byte 13, 10
+	len = . - msg
+
 _start:
 	mov $SETUPSEG, %ax
 	add $0x20, %ax
@@ -62,31 +92,3 @@ _jump:
 	mov %ax, %fs
 	mov %ax, %gs	
 	ljmp $0x0008, $0
-
-gdt_48:
-	.word (gdt_end - gdt) - 1
-	.long 0x90200 + gdt
-
-gdt:
-	gdt_black: 
-	.word 0, 0, 0, 0
-	gdt_code:
-	.word 0x7ff
-	.word 0x0000
-	.word 0x9a00
-	.word 0x00c0
-	gdt_data:
-	.word 0x7ff
-	.word 0x0000
-	.word 0x9200
-	.word 0x00c0
-gdt_end:
-
-idt_48:
-	.word 0
-	.word 0, 0
-
-strings:
-	msg : .ascii "Load setup successful"
-	.byte 13, 10
-	len = . - msg

@@ -6,5 +6,4 @@ megs: 32
 floppya: 1_44=Image,status=inserted
 boot: floppy
 
-# display_library: sdl
-# display_library: x, options: "gui_debug"
+display_library: x, options="gui_debug"
