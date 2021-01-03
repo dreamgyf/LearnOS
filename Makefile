@@ -14,7 +14,7 @@ $(SUBDIRS): echo
 	@ make -C $@
 
 system: $(SUBDIRS)
-	@ ld -m elf_i386 $(BOOT_DIR)/$(OUT_DIR)/head.o $(KERNEL_DIR)/$(OUT_DIR)/main.o -o $(OUT_DIR)/$@
+	@ ld -m elf_i386 $(BOOT_DIR)/$(OUT_DIR)/head.o $(KERNEL_DIR)/$(OUT_DIR)/main_c.o $(KERNEL_DIR)/$(OUT_DIR)/gdt_s.o $(KERNEL_DIR)/$(OUT_DIR)/gdt_c.o -o $(OUT_DIR)/$@
 	@ objcopy -O binary -j .text $(OUT_DIR)/$@
 
 Image: system

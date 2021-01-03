@@ -11,7 +11,7 @@ gdt_48:
 	.long 0x90200 + gdt
 
 gdt:
-	gdt_black: 
+	gdt_blank: 
 	.word 0, 0, 0, 0
 	gdt_code:
 	.word 0x7ff
