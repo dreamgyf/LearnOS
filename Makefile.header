@@ -1,0 +1,6 @@
+BOOT_DIR = boot
+KERNEL_DIR = kernel
+DRIVERS_DIR = drivers
+LIB_DIR = lib
+
+OUT_DIR = build
