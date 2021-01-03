@@ -1,6 +1,6 @@
 OUT_DIR = build
 
-all: ready gdt_s.o gdt_c.o main_c.o
+all: ready gdt_s.o gdt_c.o main_c.o io_c.o
 
 ready:
 	@ mkdir -p $(OUT_DIR)
