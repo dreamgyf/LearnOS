@@ -74,7 +74,7 @@ load_system:
 	mov $0x0000, %dx
 
 	mov $0x02, %ah
-	mov $0x04, %al
+	mov $0x40, %al
 	int $0x13
 
 	jnc on_load_success

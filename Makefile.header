@@ -4,3 +4,6 @@ DRIVERS_DIR = drivers
 LIB_DIR = lib
 
 OUT_DIR = build
+
+CC = gcc -m32
+CFLAGS = -fno-stack-protector -nostdinc -c

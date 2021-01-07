@@ -19,4 +19,4 @@ setup: setup.o ld-bootsect.ld
 clean:
 	@- rm -rf build
 
-.PHONY=clean, run, ready
+.PHONY=clean, ready

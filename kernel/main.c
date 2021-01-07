@@ -2,8 +2,10 @@
 #include <video.h>
 
 void main() {
+
+	print("init gdt...\n");
 	init_gdt();
-	char text[] = "init gdt finish";
-	print(text);
+	print("init gdt finish\n");
+
 	while(1);
 }

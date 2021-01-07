@@ -17,7 +17,7 @@ $(SUBDIRS): echo
 
 system: $(SUBDIRS)
 	@ ld -m elf_i386 $(SYSTEM_LINK_FILE) -o $(OUT_DIR)/$@
-	@ objcopy -O binary -j .text $(OUT_DIR)/$@
+	@ objcopy -O binary $(OUT_DIR)/$@
 
 Image: system
 	@ dd if=$(BOOT_DIR)/$(OUT_DIR)/bootsect of=$(OUT_DIR)/Image bs=512
