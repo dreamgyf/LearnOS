@@ -22,3 +22,4 @@ flush_gdt:
 
     pop %ebp
     ret
+    

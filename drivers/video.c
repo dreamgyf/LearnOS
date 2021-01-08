@@ -29,7 +29,7 @@ static void set_vt_cursor(int offset) {
 }
 
 static inline int is_out_of_range(int offset) {
-	return (offset >= MAX_COL * MAX_ROW * 2) ? 1 : 0;
+	return offset >= MAX_COL * MAX_ROW * 2;
 }
 
 static void vt_scroll_up_one_line() {
