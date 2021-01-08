@@ -1,6 +1,8 @@
 #ifndef _TYPES_H
 #define _TYPES_H
 
+#define NULL ((void*)0)
+
 typedef unsigned char uint8;
 typedef signed char int8;
 typedef unsigned short uint16;
@@ -14,5 +16,7 @@ typedef uint8 u8;
 typedef uint16 u16;
 typedef uint32 u32;
 typedef uint64 u64;
+
+typedef u32 size_t;
 
 #endif

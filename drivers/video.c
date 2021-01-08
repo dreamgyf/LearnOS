@@ -1,9 +1,10 @@
 #include <video.h>
 #include <io.h>
+#include <string.h>
 
 u8 * const VRAM = (u8*)VRAM_ADDRESS;
 
-static int get_vt_offset(int row, int col) {
+static inline int get_vt_offset(int row, int col) {
 	return (row * MAX_COL + col) * 2;
 }
 
@@ -27,16 +28,40 @@ static void set_vt_cursor(int offset) {
 	port_byte_out(REG_SCREEN_DATA, (u8)(offset & 0xff));
 }
 
+static inline int is_out_of_range(int offset) {
+	return (offset >= MAX_COL * MAX_ROW * 2) ? 1 : 0;
+}
+
+static void vt_scroll_up_one_line() {
+	memcpy(VRAM + get_vt_offset(0, 0), VRAM + get_vt_offset(1, 0), MAX_COL * (MAX_ROW - 1) * 2);
+	u8 *last_line = VRAM + get_vt_offset(MAX_ROW - 1, 0);
+	for(int i = 0; i < MAX_COL; ++i) {
+		last_line[i * 2] = 0;
+	}
+}
+
 static int handle_vt_scroll(int offset) {
-	// if(offset < MAX_COL * MAX_ROW * 2) {
-    //     return offset;
-    // }
-	// memcpy(VRAM + get_vt_offset(0, 0), VRAM + get_vt_offset(1, 0), MAX_COL * (MAX_ROW - 1) * 2);
-	// u8 *last_line = VRAM + get_vt_offset(MAX_ROW - 1, 0);
-	// for(int i = 0; i < MAX_COL; ++i) last_line[i * 2] = 0;
-	// // 滚到上一行
-	// offset -= 2 * MAX_COL;
+	if(!is_out_of_range(offset)) {
+        return offset;
+    }
+
+	vt_scroll_up_one_line();
+	
+	offset -= 2 * MAX_COL;
 	return offset;
+}
+
+static void nextCoords(int *row, int *col) {
+	if (*col >= 0 && *col < MAX_COL - 1) {
+		(*col)++;
+	} else if (*col >= 0 && *col == MAX_COL - 1) {
+		(*row)++;
+		*col = 0;
+	}
+
+	if (is_out_of_range(get_vt_offset(*row, *col))) {
+		(*row)--;
+	}
 }
 
 void print(const char *str) {
@@ -44,8 +69,11 @@ void print(const char *str) {
 }
 
 void print_at(const char *str, int row, int col) {
+	int r = row;
+	int c = col;
     for (;*str;str++) {
-        print_char(*str, row, col, 0);
+        print_char(*str, r, c, 0);
+		nextCoords(&r, &c);
     }
 }
 

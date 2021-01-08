@@ -1,6 +1,6 @@
 include ../Makefile.header
 
-all: ready stdio.o
+all: ready stdio.o string.o
 
 ready:
 	@ mkdir -p $(OUT_DIR)

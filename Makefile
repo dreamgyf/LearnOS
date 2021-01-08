@@ -3,9 +3,13 @@ include ./Makefile.header
 SUBDIRS = $(BOOT_DIR) $(KERNEL_DIR) $(DRIVERS_DIR) $(LIB_DIR)
 
 SYSTEM_LINK_FILE = $(BOOT_DIR)/$(OUT_DIR)/head.o \
-	$(KERNEL_DIR)/$(OUT_DIR)/main_c.o $(KERNEL_DIR)/$(OUT_DIR)/gdt_s.o $(KERNEL_DIR)/$(OUT_DIR)/gdt_c.o $(KERNEL_DIR)/$(OUT_DIR)/io_c.o \
+	$(KERNEL_DIR)/$(OUT_DIR)/main_c.o \
+	$(KERNEL_DIR)/$(OUT_DIR)/gdt_s.o \
+	$(KERNEL_DIR)/$(OUT_DIR)/gdt_c.o \
+	$(KERNEL_DIR)/$(OUT_DIR)/io_c.o \
 	$(DRIVERS_DIR)/$(OUT_DIR)/video.o \
-	$(LIB_DIR)/$(OUT_DIR)/stdio.o
+	$(LIB_DIR)/$(OUT_DIR)/stdio.o \
+	$(LIB_DIR)/$(OUT_DIR)/string.o
 
 all: ready Image
 

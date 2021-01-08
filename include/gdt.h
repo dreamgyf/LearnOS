@@ -1,3 +1,6 @@
+#ifndef _GDT_H
+#define _GDT_H
+
 #include <types.h>
 
 struct gdt_entry {
@@ -63,3 +66,5 @@ void flush_gdt(u32 ptr);
 
 void init_gdt();
 void set_gdt(u8 num, u32 base, u32 limit, u8 access, u8 flags);
+
+#endif
