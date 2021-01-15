@@ -7,6 +7,6 @@ void main() {
 	init_gdt();
 	print("init gdt finish\n");
 
-	int i = 2;
-	printf("i = %d", i);
+	double i = 2.6;
+	printf("i = %f", i);
 }

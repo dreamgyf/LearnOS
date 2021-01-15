@@ -78,7 +78,7 @@ static int integer_to_str(char *str, unsigned long num, int base, BOOL is_lower)
     return count;
 }
 
-static decimal_struct decimal_to_str(char *str, double num, int base, BOOL is_lower) {
+static decimal_struct decimal_to_str(char *str, double num, int precision, int base, BOOL is_lower) {
     char *digits = is_lower ? "0123456789abcdef" : "0123456789ABCDEF";
     decimal_struct ds;
 
@@ -86,7 +86,7 @@ static decimal_struct decimal_to_str(char *str, double num, int base, BOOL is_lo
     
     int int_part = (int)num;
     double dec_part = num - (double)int_part;
-    if (dec_part == 0) {
+    if (dec_part == 0 || precision == 0) {
         ds.dec_width = 0;
         ds.width = ds.int_width;
         return ds;
@@ -94,10 +94,11 @@ static decimal_struct decimal_to_str(char *str, double num, int base, BOOL is_lo
 
     int offset = ds.int_width;
     str[offset++] = '.';
-    while (dec_part != 0) {
+    while (dec_part != 0 && precision--) {
         dec_part *= base;
         unsigned int tmp = dec_part;
         str[offset++] = digits[tmp];
+        dec_part = dec_part - (int)dec_part;
     }
     str[offset] = '\0';
 
@@ -139,7 +140,10 @@ static char* arg_to_str(char *str, double arg, u8 arg_type, u8 base, unsigned in
     if (arg_type == TYPE_LONG) {
         num_count = integer_to_str(num, arg, base, flags & FLAG_LOWER);
     } else if (arg_type == TYPE_DOUBLE) {
-        decimal_struct ds = decimal_to_str(num, arg, base, flags & FLAG_LOWER);
+        if (precision < 0)
+            precision = 6;
+            
+        decimal_struct ds = decimal_to_str(num, arg, precision, base, flags & FLAG_LOWER);
         num_count = ds.width;
 
         if (precision >= 0) {
