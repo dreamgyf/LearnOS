@@ -13,6 +13,8 @@ struct gdt_entry {
     u8 base_high;
 } __attribute__((packed));
 
+typedef struct gdt_entry gdt_entry;
+
 //段存在标志P,用于指出一个段是在内存中(P=1)还是不在内存中(P=0): 10000000b
 #define GDT_AC_P 0x80
 
@@ -61,6 +63,8 @@ struct gdt_ptr {
     u16 limit;
     u32 base;
 } __attribute__((packed));
+
+typedef struct gdt_ptr gdt_ptr;
 
 void flush_gdt(u32 ptr);
 

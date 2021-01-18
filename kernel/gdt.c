@@ -12,9 +12,8 @@
 
 extern void flush_gdt(u32 ptr);
 
-
-static struct gdt_entry gdt[GDT_NUM];
-static struct gdt_ptr ptr;
+static gdt_entry gdt[GDT_NUM];
+static gdt_ptr ptr;
 
 void init_gdt() {
     set_gdt(SEL_BLANK, 0, 0, 0, 0);
