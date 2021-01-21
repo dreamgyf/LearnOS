@@ -28,7 +28,7 @@ void init_gdt() {
     set_gdt(SEL_UDATA, 0, 0xfffff, GDT_AC_P|GDT_AC_DPL_USER|GDT_AC_SYS|GDT_AC_DATA|GDT_AC_R_W, GDT_FLAG_G|GDT_FLAG_32_BIT);
 
     ptr.limit = sizeof(gdt) - 1;
-    ptr.base = (u32) &gdt;
+    ptr.base = (u32) gdt;
 
     flush_gdt((u32) &ptr);
 }
